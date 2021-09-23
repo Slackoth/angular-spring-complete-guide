@@ -13,6 +13,8 @@ export class ClientListComponent {
 
   constructor(clientService: ClientService) {
     this.clientService = clientService;
-    this.clientList = this.clientService.getClientList();
+    this.clientService
+      .getClientList()
+      .subscribe(clientList => this.clientList = clientList);
   }
 }
