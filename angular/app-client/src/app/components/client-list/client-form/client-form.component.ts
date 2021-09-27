@@ -13,6 +13,7 @@ export class ClientFormComponent implements OnInit {
   private service: ClientService
   private router: Router
   private aRoute: ActivatedRoute
+  public errors: string[]
   public title: string = "Create Client";
   public client: Client = new Client(); 
 
@@ -41,6 +42,8 @@ export class ClientFormComponent implements OnInit {
     this.service.createClient(this.client).subscribe(client => {
       this.router.navigate(['/clients']);
       Swal.fire('New client', `Client ${client.firstName} ${client.lastName}`, 'success');
+    }, e => {
+      this.errors = e.error.errors as string[];
     });
   }
 
@@ -48,6 +51,8 @@ export class ClientFormComponent implements OnInit {
     this.service.updateClient(this.client).subscribe(client => {
       this.router.navigate(['/clients']);
       Swal.fire('Client updated', `Client ${client.firstName} ${client.lastName}`, 'success');
+    }, e => {
+      this.errors = e.error.errors as string[];
     })
   }
 }

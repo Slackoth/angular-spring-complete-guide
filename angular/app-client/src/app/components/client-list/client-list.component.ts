@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { tap } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { Client } from './client';
 import { ClientService } from './client.service';
@@ -10,16 +12,26 @@ import { ClientService } from './client.service';
 })
 export class ClientListComponent implements OnInit{
   private service: ClientService
+  private aRoute: ActivatedRoute
   public clientList: Client[];
 
-  constructor(service: ClientService) {
+  constructor(service: ClientService, aRoute: ActivatedRoute) {
     this.service = service;
+    this.aRoute = aRoute;
   }
 
   public ngOnInit() {
-    this.service
-      .findAllClients()
-      .subscribe(clientList => this.clientList = clientList);
+    this.aRoute.paramMap.subscribe(params => {
+      let page: number = +params.get('page');
+
+      if(!page)
+        page = 0;
+
+      this.service
+        .findAllClients(page)
+        .pipe(tap(clientList => this.clientList = clientList))
+        .subscribe()
+    });
   }
 
   public delete = (client: Client): void => {

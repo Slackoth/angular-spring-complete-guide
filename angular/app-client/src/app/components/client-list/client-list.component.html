@@ -35,9 +35,9 @@
                     <tr *ngFor="let client of clientList">
                         <td>{{client.id}}</td>
                         <td>{{client.firstName}}</td>
-                        <td>{{client.lastName}}</td>
+                        <td>{{client.lastName | uppercase}}</td>
                         <td>{{client.email}}</td>
-                        <td>{{client.createdAt}}</td>
+                        <td>{{client.createdAt | date:"EEEE dd, MMM yyyy"}}</td>
                         <td>
                             <button class="btn btn-warning" 
                                 type="button" [routerLink]="['/clients/form', client.id]">
